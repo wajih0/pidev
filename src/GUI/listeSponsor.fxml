@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="706.0" style="-fx-background-color: e9ebf0;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ListeSponsorController">
+    <children>
+      <TableView fx:id="sponsortable" layoutX="100.0" layoutY="166.0" prefHeight="200.0" prefWidth="488.0">
+        <columns>
+          <TableColumn fx:id="id" minWidth="50.0" prefWidth="245.0" style="-fx-alignment: center;" text="id" />
+            <TableColumn fx:id="nom" prefWidth="241.0" style="-fx-alignment: center;" text="nom" />
+        </columns>
+      </TableView>
+<Pane layoutY="74.0" prefHeight="4.0" prefWidth="200.0" style="-fx-background-color: #c86c34;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Text layoutX="24.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Liste des sponsor" wrappingWidth="224.6708984375">
+         <font>
+            <Font name="Arial" size="25.0" />
+         </font>
+      </Text>
+      <HBox alignment="CENTER" layoutX="557.0" layoutY="6.142857551574707" />
+      <FontAwesomeIcon glyphName="CLOSE" layoutX="674.0" layoutY="30.0" onMouseClicked="#close" text="" wrappingWidth="11.0" />
+      <HBox alignment="CENTER_LEFT" layoutY="78.0" prefHeight="77.0" prefWidth="200.0" spacing="20.0" AnchorPane.leftAnchor="10.0">
+         <children>
+            <FontAwesomeIcon fill="#566588" glyphName="USER_PLUS" onMouseClicked="#getAddview" size="2em">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </FontAwesomeIcon>
+            <FontAwesomeIcon fill="GREEN" glyphName="REFRESH" layoutX="10.0" layoutY="60.0" onMouseClicked="#refreshtable" size="2em" />
+            <FontAwesomeIcon fill="#c86c34" glyphName="PRINT" layoutX="45.0" layoutY="60.0" onMouseClicked="#print" size="2em" />
+         </children>
+      </HBox>
+     
+   </children>
+</AnchorPane>
