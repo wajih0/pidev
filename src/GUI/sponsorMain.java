@@ -6,6 +6,12 @@ package GUI;
  * and open the template in the editor.
  */
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.Console;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -26,6 +32,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
+import pidev.entities.evennement;
 
 
 /**
@@ -35,54 +45,24 @@ import java.io.IOException;
 public class sponsorMain extends Application {
    // private double xoff = 0;
    // private double yoff = 0;
-    
+ 
     
     @Override
     public void start(Stage primaryStage) throws IOException{
-       
-            Parent parent = FXMLLoader.load(getClass().getResource("listeSponsor.fxml"));
+        //AddeventAdmin
+       // listevent_1 
+       //listevent  fxml de user 
+       //listeSponsor
+             Parent parent = FXMLLoader.load(getClass().getResource("listeSponsor.fxml"));
            Scene scene = new Scene(parent);
             scene.setFill(Color.TRANSPARENT);
             primaryStage.setScene(scene);
             primaryStage.initStyle(StageStyle.TRANSPARENT);
             primaryStage.show();
       
-
-        
-    }
-      /* Parent root = FXMLLoader.load((getClass()).getResource("/pidev/GUI/sponsor.fxml"));
-              Scene scene = new Scene(root);
-              //        Scene scene = new Scene(root, 300, 250);
-              primaryStage.initStyle(StageStyle.DECORATED.UNDECORATED);
-              
-              
-
+    }    
 
        
-       root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            
-            @Override
-            public void handle(MouseEvent event) {
-                xoff = event.getSceneX();
-                yoff = event.getSceneY();
-            }
-            
-        });
-       
-         root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            
-            @Override
-            public void handle(MouseEvent event) {
-              primaryStage.setX(event.getSceneX() - xoff);
-              primaryStage.setY(event.getSceneY() - yoff);
-            }
-            
-        });
-        primaryStage.setScene(scene);
-        primaryStage.show();
-      
-       
-    }*/
 
     /**
      * @param args the command line arguments

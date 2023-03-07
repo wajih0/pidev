@@ -56,45 +56,119 @@ public class event_service implements IService<evennement>{
   
     
     
-    public void add(evennement e) {
-        try{
- String qry ="INSERT INTO `evennement`( `nom`,`date`,`lieu`,`prix`,`description`,`nb_participants`,`type_evenement`,`sponsor_id` )" +"VALUES (?,?,?,?,?,?,?,?)";
- PreparedStatement ps = cnx.prepareStatement(qry);
- ps.setString(1, e.getNom());
- ps.setDate(2,new java.sql.Date(System.currentTimeMillis()));
- ps.setString(3, "tunis");
- ps.setInt(4, 40);
- ps.setString(5, "aaaa");
- ps.setInt(6, 100);
- ps.setString(7, type_evennement.MUSIQUE.name());
- ps.setInt(8, 1);
+   public void add(evennement e) {
+  
+
+        
+       try{
+ String qry ="INSERT INTO `evennement`( `nom`, `description`, `lieu`, `prix`, `sponsor_id`, `date`, `nb_participants`, `type_evenement`)" +"VALUES ('"+e.getNom()+"','"+e.getDescription()+"','"+e.getLieu()+"','"+e.getPrix()+"',"+e.getSponsors()+",'"+e.getDate()+"','"+e.getNb_participants()+"','"+e.getType_evenement()+"')";
+ cnx = DataSource.getInstance().getCnx();
+        Statement stm = cnx.createStatement();
+        stm.executeUpdate(qry);
+
+         
+        }catch(SQLException q) {
+         q.printStackTrace();
+
+
  
- int rowsInserted=ps.executeUpdate();
-          System.out.println(rowsInserted  + " ligne(s) inserée(s)");
+
+          
+         
+        }
+   }
+   
+     
+   public void addBYUser(evennement e) {
+  
+
+        
+       try{
+ String qry ="INSERT INTO `evennement`( `nom`, `description`, `lieu`, `prix`,  `date`, `nb_participants`, `type_evenement`)" +"VALUES ('"+e.getNom()+"','"+e.getDescription()+"','"+e.getLieu()+"','"+e.getPrix()+"','"+e.getDate()+"','"+e.getNb_participants()+"','"+e.getType_evenement()+"')";
+  cnx = DataSource.getInstance().getCnx();
+        Statement stm = cnx.createStatement();
+        stm.executeUpdate(qry);
           
          
         }catch(SQLException q) {
          q.printStackTrace();
-      }    }
+      } }
 
-    @Override
-    public List<evennement> afficher() {
- String requete ="select * from evennement";
-        List<evennement> list=new ArrayList<>();
-        try {
-            Statement stm=cnx.createStatement();
-           ResultSet rs= stm.executeQuery(requete);
-           while(rs.next()){
-               evennement p=new evennement
-        (rs.getInt("id"), rs.getString("nom"), rs.getString("description"));
-               list.add(p);
-                       
-           }
-        } catch (SQLException ex) {
-            Logger.getLogger(event_service.class.getName()).log(Level.SEVERE, null, ex);
+    
+    
+    
+   
+    
+    
+    
+@Override
+public List<evennement> afficher() {
+    List<evennement> list=new ArrayList<>();
+    try {
+            String requete ="select * from evennement";
+
+                cnx=DataSource.getInstance().getCnx();
+
+        Statement stm=cnx.createStatement();
+        ResultSet rs= stm.executeQuery(requete);
+        while(rs.next()){
+            evennement 
+            p = new evennement();
+            p.setNom(rs.getString(2)); ;
+           p.setDescription(rs.getString(3));
+            p.setLieu(rs.getString(4));
+            p.setPrix(rs.getDouble(5));
+            p.setDate(rs.getDate(7));
+            p.setNb_participants(rs.getInt(8));
+            p.setType_evenement(type_evennement.ART);
+           
+
+           
+            
+
+            
+            
+            list.add(p);
         }
-        return list; 
+    } catch (SQLException ex) {
+        Logger.getLogger(event_service.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return list; 
+}
+public List<evennement> afficherByuserid(int i) {
+    List<evennement> list=new ArrayList<>();
+    try {
+            String requete ="select * from evennement WHERE `id`="+i+"";
+
+                cnx=DataSource.getInstance().getCnx();
+
+        Statement stm=cnx.createStatement();
+        ResultSet rs= stm.executeQuery(requete);
+        while(rs.next()){
+            evennement 
+            p = new evennement();
+            p.setNom(rs.getString(2)); ;
+           p.setDescription(rs.getString(3));
+            p.setLieu(rs.getString(4));
+            p.setPrix(rs.getDouble(5));
+            p.setDate(rs.getDate(7));
+            p.setNb_participants(rs.getInt(8));
+            p.setType_evenement(type_evennement.MUSIQUE);
+           
+
+           
+            
+
+            
+            
+            list.add(p);
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(event_service.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return list; 
+}
+
 
     
   public List<evennement> modifier(evennement e) {
@@ -114,7 +188,7 @@ String requete = "UPDATE `evennement` SET `nom`='" + e.getNom() + "', `descripti
 
 
     
-    public void supprimer(String nom) {
+   /* public void supprimer(String nom) {
    String requete = "DELETE FROM evennement WHERE nom = '" + nom + "';";
     try {
         Statement stm = cnx.createStatement();
@@ -123,8 +197,24 @@ String requete = "UPDATE `evennement` SET `nom`='" + e.getNom() + "', `descripti
     } catch (SQLException ex) {
         System.out.println("Erreur lors de la suppression de l'événement " + nom + " : " + ex.getMessage());
     }
-                }
+                }*/
 
+  
+     public void supprimerid(String u) {
+         try {
+            String qry = "DELETE FROM `evennement` WHERE Nom='" + u + "'";
+            cnx = DataSource.getInstance().getCnx();
+
+            Statement stm = cnx.createStatement();
+
+            stm.executeUpdate(qry);
+            
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+       
+    }
   
     
     

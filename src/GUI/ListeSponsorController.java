@@ -4,6 +4,12 @@
  * and open the template in the editor.
  */
 package GUI;
+
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.geometry.Insets;
 
@@ -35,8 +41,33 @@ import javafx.util.Callback;
 import pidev.entities.sponsor;
 import pidev.utils.DataSource;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import java.awt.Desktop;
+import java.awt.TextField;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.stream.Collectors;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableRow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+import pidev.entities.evennement;
+import pidev.services.sponsort_service;
 
 /**
  * FXML Controller class
@@ -44,31 +75,93 @@ import javafx.scene.layout.HBox;
  * @author wajihbenhmida
  */
 public class ListeSponsorController implements Initializable {
-        @FXML
+
+    @FXML
+    private javafx.scene.control.TextField ID;
+    @FXML
     private TableView<sponsor> sponsortable;
-           @FXML
-    private TableColumn<sponsor,String> id;
+    @FXML
+    private TableColumn<sponsor, String> id;
 
     @FXML
     private TableColumn<sponsor, String> nom;
-      String query = null;
-    Connection connection = null ;
-    PreparedStatement preparedStatement = null ;
-    ResultSet resultSet = null ;
-    sponsor sponsor = null ;
-     ObservableList<sponsor>  sponsorList = FXCollections.observableArrayList();
+    @FXML
+    private TableColumn<sponsor, String> Image;
 
+    @FXML
+    private javafx.scene.control.TextField MODIF;
+    @FXML
+    private ImageView img;
+    @FXML
+    private Label path;
+    @FXML
+    private Button Timage;
+
+    @FXML
+    private javafx.scene.control.TextField search;
+
+    int index = -1;
+    String query = null;
+    Connection connection = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet resultSet = null;
+    sponsor sponsor = null;
+    ObservableList<sponsor> sponsorList = FXCollections.observableArrayList();
+    sponsort_service sp = new sponsort_service();
+
+    @FXML
+    void filter(KeyEvent event) {
+        String searchText = search.getText() != null ? search.getText().toLowerCase() : "";
+        ObservableList<sponsor> filteredPeople = FXCollections.observableArrayList(sp.afficher());
+
+        ObservableList<sponsor> newdata = filteredPeople.stream().filter(n -> {
+            String nom = n.getNom() != null ? n.getNom().toLowerCase() : "";
+
+            return nom.contains(searchText)
+                    || nom.equals(searchText);
+
+        })
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+
+        sponsortable.setItems(newdata);
+
+    }
 
     @FXML
     void close(MouseEvent event) {
-         Stage stage = (Stage)((Node) event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
 
     }
 
     @FXML
+    public void supprim(ActionEvent event) {
+        int myIndex = sponsortable.getSelectionModel().getSelectedIndex();
+        String nom = sponsortable.getSelectionModel().getSelectedItem().getNom();
+        String imagee = sponsortable.getSelectionModel().getSelectedItem().getImage();
+        sp.supprimerid(nom);
+        JOptionPane.showMessageDialog(null, "sponsor supprimer ");
+        refreshtable();
+
+    }
+
+    void modifier(MouseEvent event) {
+        /*        int myIndex = tablepersonne.getSelectionModel().getSelectedIndex();
+        String nom = tablepersonne.getSelectionModel().getSelectedItem().getNom();
+        ps.modifierisactive(nom);
+          JOptionPane.showMessageDialog(null, "utilisateur debloquer ");*/
+
+        //  int idduser = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).update()));
+        //  boolean conffff = Boolean.valueOf(sponsortable.getItems().get(myIndex).isConfirmation());
+    }
+
+    public void delete(ActionEvent event) {
+
+    }
+
+    @FXML
     void getAddview() {
-          try {
+        try {
             Parent parent = FXMLLoader.load(getClass().getResource("addsponsor.fxml"));
             Scene scene = new Scene(parent);
             Stage stage = new Stage();
@@ -82,33 +175,67 @@ public class ListeSponsorController implements Initializable {
     }
 
     @FXML
-    void print(MouseEvent event) {
+    void print(MouseEvent event) throws IOException {
+        
+        long millis = System.currentTimeMillis();
+    java.sql.Date DateRapport = new java.sql.Date(millis);
 
+    String DateLyoum = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(DateRapport);
+    System.out.println("Date d'aujourdhui : " + DateLyoum);
+
+    com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+
+    try {
+        PdfWriter.getInstance(document, new FileOutputStream(String.valueOf(DateLyoum + ".pdf")));//yyyy-MM-dd
+       
+       document.open();
+        Paragraph ph1 = new Paragraph("Rapport Pour les sponsor :" + DateRapport);
+        Paragraph ph2 = new Paragraph(".");
+        PdfPTable table = new PdfPTable(1);
+
+        //On créer l'objet cellule.
+        PdfPCell cell;
+
+        //contenu du tableau.
+      table.addCell("Nom");
+  
+
+
+        evennement r = new evennement();
+        sp.afficher().forEach(e -> {
+            table.setHorizontalAlignment(Element.ALIGN_CENTER);
+                                    table.addCell(String.valueOf(e.getNom()));
+                    
+            
+        });
+        document.add(ph1);
+        document.add(ph2);
+        document.add(table);
+        //  document.addAuthor("Bike");
+        // AlertDialog.showNotification("Creation PDF ", "Votre fichier PDF a ete cree avec success", AlertDialog.image_checked);
+    } catch (Exception e) {
+        System.out.println(e);
     }
+    document.close();
+
+    ///Open FilePdf
+    File file = new File(DateLyoum + ".pdf");
+    Desktop desktop = Desktop.getDesktop();
+    if (file.exists()) //checks file exists or not  
+    {
+        desktop.open(file); //opens the specified file   
+    }
+
+}
+
+    
+
+   
 
     @FXML
     void refreshtable() {
-           try {
-            sponsorList.clear();
-            
-            query = "SELECT * FROM `sponsor`";
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-            
-            while (resultSet.next()){
-                sponsorList.add(new  sponsor(
-                        resultSet.getInt("id"),
-                        resultSet.getString("nom")));
-              
-                sponsortable.setItems(sponsorList);
-                
-            }
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(ListeSponsorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+     LoadDate();
     }
 
     /**
@@ -118,110 +245,196 @@ public class ListeSponsorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         LoadDate();
-    }    
 
+    }
+    
+        @FXML
+    void addimgcours(ActionEvent event) {
+        
+         FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilterJPG
+                = new FileChooser.ExtensionFilter("JPG files (*.JPG)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterjpg
+                = new FileChooser.ExtensionFilter("jpg files (*.jpg)", "*.jpg");
+        FileChooser.ExtensionFilter extFilterPNG
+                = new FileChooser.ExtensionFilter("PNG files (*.PNG)", "*.PNG");
+        FileChooser.ExtensionFilter extFilterpng
+                = new FileChooser.ExtensionFilter("png files (*.png)", "*.png");
+        fileChooser.getExtensionFilters()
+                .addAll(extFilterJPG, extFilterjpg, extFilterPNG, extFilterpng);
+        File file = fileChooser.showOpenDialog(null);
+        try {
+            BufferedImage bufferedImage = ImageIO.read(file);
+            WritableImage image = SwingFXUtils.toFXImage(bufferedImage, null);
+            img.setImage(image);
+            img.setFitWidth(200);
+            img.setFitHeight(200);
+            img.scaleXProperty();
+            img.scaleYProperty();
+            img.setSmooth(true);
+            img.setCache(true);
+            FileInputStream fin = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            byte[] buf = new byte[1024];
+            for (int readNum; (readNum = fin.read(buf)) != -1;) {
+                bos.write(buf, 0, readNum);
+            }
+            byte[] person_image = bos.toByteArray();
+        } catch (IOException ex) {
+            Logger.getLogger("ss");
+        }
+        path.setText(file.getAbsolutePath());
+    }
+    
     private void LoadDate() {
-connection = DataSource.getInstance().getCnx();
-refreshtable();
-      id.setCellValueFactory(new PropertyValueFactory<sponsor,String>("id"));
+    sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
+    id.setCellValueFactory(new PropertyValueFactory<>("id"));
+    nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+    Image.setCellValueFactory(new PropertyValueFactory<>("Image"));
+    sponsortable.setEditable(true);
 
-        nom.setCellValueFactory(new PropertyValueFactory<sponsor,String>("nom"));
-        
-         Callback<TableColumn<sponsor, String>, TableCell<sponsor, String>> cellFoctory;
-            cellFoctory = (TableColumn<sponsor, String> param) -> {
-                // make cell containing buttons
-                final TableCell<sponsor, String> cell = new TableCell<sponsor, String>() {
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        //that cell created only on non-empty rows
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                            
-                        } else {
-                            
-                            FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.CLOSE);
-                            FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE);
-                            
-                            deleteIcon.setStyle(
-                                    " -fx-cursor: hand ;"
-                                            + "-glyph-size:28px;"
-                                            + "-fx-fill:#ff1744;"
-                            );
-                            editIcon.setStyle(
-                                    " -fx-cursor: hand ;"
-                                            + "-glyph-size:28px;"
-                                            + "-fx-fill:#00E676;"
-                            );
-                            deleteIcon.setOnMouseClicked((MouseEvent event) -> {
-                                
-                                try {
-                                    sponsor = sponsortable.getSelectionModel().getSelectedItem();
-                                    query = "DELETE FROM `student` WHERE id  ="+sponsor.getId();
-connection = DataSource.getInstance().getCnx();
-                                    preparedStatement = connection.prepareStatement(query);
-                                    preparedStatement.execute();
-                                    refreshtable();
-                                    
-                                } catch (SQLException ex) {
-                                    Logger.getLogger(ListeSponsorController.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                                
-                                
-                                
-                                
-                                
-                            });
-                            editIcon.setOnMouseClicked((MouseEvent event) -> {
-                                
-                                sponsor = sponsortable.getSelectionModel().getSelectedItem();
-                                FXMLLoader loader = new FXMLLoader ();
-                                loader.setLocation(getClass().getResource("/tableView/addStudent.fxml"));
-                                try {
-                                    loader.load();
-                                } catch (IOException ex) {
-                                    Logger.getLogger(ListeSponsorController.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                                
-                                AddsponsorController addsponsorController = loader.getController();
-                                addsponsorController.setUpdate(true);
-                                addsponsorController.setTextField(sponsor.getId(), sponsor.getNom() );
-                                Parent parent = loader.getRoot();
-                                Stage stage = new Stage();
-                                stage.setScene(new Scene(parent));
-                                stage.initStyle(StageStyle.UTILITY);
-                                stage.show();
-                                
-                                
-                                
-                                
-                            });
-                            
-                            HBox managebtn = new HBox(editIcon, deleteIcon);
-                            managebtn.setStyle("-fx-alignment:center");
-                            HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
-                            HBox.setMargin(editIcon, new Insets(2, 3, 0, 2));
-                            
-                            setGraphic(managebtn);
-                            
-                            setText(null);
-                            
-                        }
-                    }
-                    
-                };
+    sponsortable.setRowFactory(tv -> {
+        TableRow<sponsor> myRow = new TableRow<>();
+        myRow.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 1 && (!myRow.isEmpty())) {
+                int myIndex = sponsortable.getSelectionModel().getSelectedIndex();
+                int id = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).getId()));
+                String idd = String.valueOf(id);
+                ID.setText(idd);
+
+                String nommmmmm = sponsortable.getItems().get(myIndex).getNom();
+                String imageeeeeeee = sponsortable.getItems().get(myIndex).getImage();
+                MODIF.setText(nommmmmm);
+                path.setText(imageeeeeeee);
+
+    String imagePath = "C:\\Users\\wajihbenhmida\\Downloads\\image\\download.jpg";
+     imagePath = "C:\\Users\\wajihbenhmida\\Downloads\\image\\qr-code.png";
+    
+
+
+    String newImagePath = imagePath.replaceAll("\\\\", "/");
+    Image c = new Image("file:///" + newImagePath);
+    // Utilisez l'image c comme vous le souhaitez
+
+                img.setImage(c);
+                img.setFitWidth(200);
+                img.setFitHeight(200);
+                img.scaleXProperty();
+                img.scaleYProperty();
+                img.setSmooth(true);
+                img.setCache(true);
                 
-                return cell;
-            };
-         editCol.setCellFactory(cellFoctory);
-         sponsortable.setItems(sponsorList);
-         
-         
-    }
-        
-    }
-    
-    
-    
+                try {
+                    File file = new File(imageeeeeeee);
+                    FileInputStream fis = new FileInputStream(file);
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte[] buf = new byte[1024];
+                    for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                        bos.write(buf, 0, readNum);
+                    }
+                    byte[] person_image = bos.toByteArray();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return myRow;
+    });
 }
+
+
+   /* private void LoadDate() {
+    sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
+    id.setCellValueFactory(new PropertyValueFactory<>("id"));
+    nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+    Image.setCellValueFactory(new PropertyValueFactory<>("Image"));
+    sponsortable.setEditable(true);
+
+    sponsortable.setRowFactory(tv -> {
+        TableRow<sponsor> myRow = new TableRow<>();
+        myRow.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 1 && (!myRow.isEmpty())) {
+                int myIndex = sponsortable.getSelectionModel().getSelectedIndex();
+                int id = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).getId()));
+                String idd = String.valueOf(id);
+                ID.setText(idd);
+
+                String nommmmmm = sponsortable.getItems().get(myIndex).getNom();
+                String imageeeeeeee = sponsortable.getItems().get(myIndex).getImage();
+                MODIF.setText(nommmmmm);
+                path.setText(imageeeeeeee);
+
+                String newString = imageeeeeeee.replaceAll("/", "\\\\");
+                Image c = new Image("file:///" + newString);
+                
+                img.setImage(c);
+                img.setFitWidth(200);
+                img.setFitHeight(200);
+                img.scaleXProperty();
+                img.scaleYProperty();
+                img.setSmooth(true);
+                img.setCache(true);
+                
+            }
+        });
+        return myRow;
+    });
+}*/
+
+
+    
+                    
+    @FXML
+  private void delete(MouseEvent event) {
+    }
+
+  
+
+    void getAddview(MouseEvent event) {
+
+    }
+
+    @FXML
+    void getSelected(MouseEvent event) {
+
+    }
+
+
+    /*@FXML
+    private void Edit(MouseEvent event) {
+          sponsor s=new sponsor();
+                            s.setId(Integer.parseInt(ID.getText()) );  
+                            System.out.println(path.getText());
+                            s.setImage(path.getText());
+                            s.setNom( MODIF.getText());
+                            System.out.println(s.getId());
+                            System.out.println("hellllllo"+path.getText());
+                            System.out.println(s);
+                            
+                           //sp.update(s); 
+                          // refreshtable();
+    }*/
+
+    @FXML
+    private void Edit(ActionEvent event) {
+               
+                           
+                            sponsor s=new sponsor();
+                            s.setId(Integer.parseInt(ID.getText()) );  
+                            System.out.println(path.getText());
+                            
+                            s.setImage(path.getText());
+                            s.setNom( MODIF.getText());
+                            System.out.println(s.getId());
+                            System.out.println(s);
+                            
+                            sp.update(s); 
+                            refreshtable();
+    }
+
+   
+
+
+
+}
+        

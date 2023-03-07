@@ -16,19 +16,33 @@ public class sponsor {
  
     private int id;
     private String nom;
+    private String Image ; 
 
-    public sponsor( int par, String nom) {
+    public sponsor() {
+    }
+
+    
+    public sponsor( int id, String nom ,String Image) {
+        this.id=id;
    
         this.nom = nom;
+        this.Image=Image ;
     }
 
-    public sponsor(int aInt, String string, Date date, String string0, String string1) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public sponsor(int id, String string) {
+  this.id=id;
+   
+        this.nom = nom;    }
 
-    public sponsor(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public String getImage(){
+      return Image ;
+  }
+
+    public void setImage(String Image) {
+        this.Image = Image;
     }
+ 
+
 
    
 
@@ -50,10 +64,9 @@ public class sponsor {
 
     @Override
     public String toString() {
-        return "sponsor{" + "id=" + id + ", nom=" + nom + '}';
+        return "sponsor{" + "id=" + id + ", nom=" + nom + ", Image=" + Image + '}';
     }
-    
-    
+
     
     
 }

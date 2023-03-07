@@ -7,7 +7,7 @@ package pidev.entities;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 
@@ -19,9 +19,10 @@ public class evennement {
     private int id ;
     private String nom , description ,lieu ;
     private Date Date ;
-    private int prix,nb_participants;
+    private int nb_participants;
+    private double prix;
     private type_evennement type_evenement; //enum
-    private List<sponsor> sponsors;//one to many sponsor
+    private int sponsors;//one to many sponsor
 
     public evennement(int id, String nom, String description1) {
         this.id = id;
@@ -34,6 +35,39 @@ public class evennement {
         this.type_evenement = type_evenement;
         this.sponsors = sponsors;
     }
+    public evennement(int id, String nom, String description, String lieu, Date date, int nb_participants, double prix, type_evennement type_evenement,int sponsors) {
+    this.id = id;
+    this.nom = nom;
+    this.description = description;
+    this.lieu = lieu;
+    this.Date = date;
+    this.nb_participants = nb_participants;
+    this.prix = prix;
+    this.type_evenement = type_evenement;
+    this.sponsors = sponsors;
+}
+
+    public evennement(String nom, String description, String lieu, Date Date, int nb_participants, double prix, type_evennement type_evenement, int sponsors) {
+        this.nom = nom;
+        this.description = description;
+        this.lieu = lieu;
+        this.Date = Date;
+        this.nb_participants = nb_participants;
+        this.prix = prix;
+        this.type_evenement = type_evenement;
+        this.sponsors = sponsors;
+    }
+
+    public evennement(String nom, String description, String lieu, Date Date, int nb_participants, double prix, type_evennement type_evenement) {
+        this.nom = nom;
+        this.description = description;
+        this.lieu = lieu;
+        this.Date = Date;
+        this.nb_participants = nb_participants;
+        this.prix = prix;
+        this.type_evenement = type_evenement;
+    }
+
     
 
     public evennement() {
@@ -48,6 +82,26 @@ public class evennement {
         this.type_evenement = type_evenement;
     }
 
+    public evennement(int i, String fir1113, String lelelele, String nabil) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+  
+
+  
+
+ 
+    
+
+ 
+
+
+  
+   
+  
+
+   
+   
   
 
   
@@ -72,7 +126,7 @@ public class evennement {
         return Date;
     }
 
-    public int getPrix() {
+    public Double getPrix() {
         return prix;
     }
 
@@ -84,7 +138,7 @@ public class evennement {
         return type_evenement;
     }
 
-    public List<sponsor> getSponsors() {
+    public int getSponsors() {
         return sponsors;
     }
 
@@ -108,7 +162,7 @@ public class evennement {
         this.Date = Date;
     }
 
-    public void setPrix(int prix) {
+    public void setPrix(Double prix) {
         this.prix = prix;
     }
 
@@ -120,7 +174,7 @@ public class evennement {
         this.type_evenement = type_evenement;
     }
 
-    public void setSponsors(List<sponsor> sponsors) {
+    public void setSponsors(int sponsors) {
         this.sponsors = sponsors;
     }
 

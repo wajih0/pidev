@@ -5,6 +5,7 @@
  */
 package pidev;
 
+import java.sql.Date;
 import java.util.List;
 import pidev.entities.evennement;
 import pidev.entities.sponsor;
@@ -26,29 +27,37 @@ public class Pidev {
         //Personne p1=new Personne(3, "bensalah", "saif");
         //personneservice ps=new personneservice();    
         //ps.add(p1);
+       String  d= "	2008-11-11"; 
+        Date d1 = new Date(2023 - 1900, 13 - 01, 13);
         
+        evennement e = new evennement("hello","dezsss","sdhjk",d1,100,100,type_evennement.ART,1);
         
-        
-        
-        
-        event_service es = new event_service(9, "siki3", "Ceci est un événement");
-        evennement e= new evennement(9, "siki10","lelelele");
+        event_service es = new event_service();
+        sponsort_service pi=new sponsort_service();
+        sponsor s= new sponsor();
+        s.setNom("ahla bik");
+        s.setId(17);
+       
+       pi.update(s);
+      //  evennement e= new evennement( 1,"fir1113","lelelele");
       //  es.modifier(e);
-      // es.add(e);
+        // es.add(e);
+        System.out.println(es.afficher());
     //  es.supprimer("siki2");
           
-//es.afficher();
+       // System.out.println(es.afficher());
        
+        sponsort_service ss = new  sponsort_service();
+        sponsor sp1 = new sponsor(2,"marwa");
+//ss.add(sp1);
+       // System.out.println(ss.afficher());
+            // sponsort_service ss=new sponsort_service(17,"jannet2");
 
-
-
-     
-        sponsor sp1=new sponsor( 2,"jannet2");
-        sponsort_service ss=new sponsort_service("jdbc:mysql://localhost:3306/wajih");
+      //  sponsor sp1=new sponsor( 17,"sabrine");
         //ss.add(sp1);
        // ss.afficher();
-        System.out.println(ss.afficher());
-        //ss.update(sp1);
+      // System.out.println(ss.afficher());
+       // ss.update(sp1);
        // ss.supprimer_sponsor("jannet");
 }
 
