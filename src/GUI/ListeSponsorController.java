@@ -50,12 +50,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableRow;
 import javafx.scene.image.Image;
@@ -64,6 +67,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import pidev.entities.evennement;
@@ -91,7 +95,7 @@ public class ListeSponsorController implements Initializable {
     @FXML
     private javafx.scene.control.TextField MODIF;
     @FXML
-    private ImageView img;
+    private ImageView imgg;
     @FXML
     private Label path;
     @FXML
@@ -146,13 +150,7 @@ public class ListeSponsorController implements Initializable {
     }
 
     void modifier(MouseEvent event) {
-        /*        int myIndex = tablepersonne.getSelectionModel().getSelectedIndex();
-        String nom = tablepersonne.getSelectionModel().getSelectedItem().getNom();
-        ps.modifierisactive(nom);
-          JOptionPane.showMessageDialog(null, "utilisateur debloquer ");*/
 
-        //  int idduser = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).update()));
-        //  boolean conffff = Boolean.valueOf(sponsortable.getItems().get(myIndex).isConfirmation());
     }
 
     public void delete(ActionEvent event) {
@@ -176,66 +174,68 @@ public class ListeSponsorController implements Initializable {
 
     @FXML
     void print(MouseEvent event) throws IOException {
-        
+
         long millis = System.currentTimeMillis();
-    java.sql.Date DateRapport = new java.sql.Date(millis);
+        java.sql.Date DateRapport = new java.sql.Date(millis);
 
-    String DateLyoum = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(DateRapport);
-    System.out.println("Date d'aujourdhui : " + DateLyoum);
+        String DateLyoum = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(DateRapport);
+        System.out.println("Date d'aujourdhui : " + DateLyoum);
 
-    com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
 
-    try {
-        PdfWriter.getInstance(document, new FileOutputStream(String.valueOf(DateLyoum + ".pdf")));//yyyy-MM-dd
-       
-       document.open();
-        Paragraph ph1 = new Paragraph("Rapport Pour les sponsor :" + DateRapport);
-        Paragraph ph2 = new Paragraph(".");
-        PdfPTable table = new PdfPTable(1);
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(String.valueOf(DateLyoum + ".pdf")));//yyyy-MM-dd
 
-        //On créer l'objet cellule.
-        PdfPCell cell;
-
-        //contenu du tableau.
-      table.addCell("Nom");
-  
-
-
-        evennement r = new evennement();
-        sp.afficher().forEach(e -> {
-            table.setHorizontalAlignment(Element.ALIGN_CENTER);
-                                    table.addCell(String.valueOf(e.getNom()));
-                    
+            document.open();
+            Paragraph ph1 = new Paragraph("Rapport Pour les sponsor :" + DateRapport);
             
-        });
-        document.add(ph1);
-        document.add(ph2);
-        document.add(table);
-        //  document.addAuthor("Bike");
-        // AlertDialog.showNotification("Creation PDF ", "Votre fichier PDF a ete cree avec success", AlertDialog.image_checked);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    document.close();
+            
+            Paragraph ph2 = new Paragraph(".");
+            PdfPTable table = new PdfPTable(1);
 
-    ///Open FilePdf
-    File file = new File(DateLyoum + ".pdf");
-    Desktop desktop = Desktop.getDesktop();
-    if (file.exists()) //checks file exists or not  
-    {
-        desktop.open(file); //opens the specified file   
-    }
+            //On créer l'objet cellule.
+            PdfPCell cell;
 
-}
+            //contenu du tableau.
+            table.addCell("Nom");
 
-    
+            evennement r = new evennement();
+            sp.afficher().forEach(e -> {
+                table.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(String.valueOf(e.getNom()));
 
-   
+            });
+            document.add(ph1);
+            document.add(ph2);
+            document.add(table);
+            //  document.addAuthor("Bike");
+            // AlertDialog.showNotification("Creation PDF ", "Votre fichier PDF a ete cree avec success", AlertDialog.image_checked);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        document.close();
+
+        ///Open FilePdf
+       Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Fichier PDF généré");
+    alert.setHeaderText("Le fichier PDF a été généré avec succès !");
+    alert.setContentText("Voulez-vous ouvrir le fichier PDF maintenant ?");
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+        File file = new File(DateLyoum + ".pdf");
+        Desktop desktop = Desktop.getDesktop();
+        if (file.exists()) //checks file exists or not  
+        {
+            desktop.open(file); //opens the specified file   
+        }
+
+    }}
 
     @FXML
     void refreshtable() {
 
-     LoadDate();
+        LoadDate();
     }
 
     /**
@@ -247,11 +247,11 @@ public class ListeSponsorController implements Initializable {
         LoadDate();
 
     }
-    
-        @FXML
+
+    @FXML
     void addimgcours(ActionEvent event) {
-        
-         FileChooser fileChooser = new FileChooser();
+
+        FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilterJPG
                 = new FileChooser.ExtensionFilter("JPG files (*.JPG)", "*.JPG");
         FileChooser.ExtensionFilter extFilterjpg
@@ -266,13 +266,13 @@ public class ListeSponsorController implements Initializable {
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
             WritableImage image = SwingFXUtils.toFXImage(bufferedImage, null);
-            img.setImage(image);
-            img.setFitWidth(200);
-            img.setFitHeight(200);
-            img.scaleXProperty();
-            img.scaleYProperty();
-            img.setSmooth(true);
-            img.setCache(true);
+            imgg.setImage(image);
+            imgg.setFitWidth(200);
+            imgg.setFitHeight(200);
+            imgg.scaleXProperty();
+            imgg.scaleYProperty();
+            imgg.setSmooth(true);
+            imgg.setCache(true);
             FileInputStream fin = new FileInputStream(file);
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
@@ -286,7 +286,53 @@ public class ListeSponsorController implements Initializable {
         path.setText(file.getAbsolutePath());
     }
     
+    
     private void LoadDate() {
+    sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
+    id.setCellValueFactory(new PropertyValueFactory<>("id"));
+    nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
+    Image.setCellValueFactory(new PropertyValueFactory<>("Image"));
+    sponsortable.setEditable(true);
+
+  sponsortable.setRowFactory(tv -> {
+    TableRow<sponsor> myRow = new TableRow<>();
+    myRow.setOnMouseClicked((MouseEvent event) -> {
+        if (event.getClickCount() == 1 && (!myRow.isEmpty())) {
+            int myIndex = sponsortable.getSelectionModel().getSelectedIndex();
+            int id = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).getId()));
+            String idd = String.valueOf(id);
+            ID.setText(idd);
+
+            String nommmmmm = sponsortable.getItems().get(myIndex).getNom();
+            String imageeeeeeee = sponsortable.getItems().get(myIndex).getImage();
+            MODIF.setText(nommmmmm);
+            path.setText(imageeeeeeee);
+
+            // Chargement de l'image à partir du chemin d'accès stocké dans la base de données
+            File file = new File(imageeeeeeee);
+            Image c = new Image(file.toURI().toString());
+            imgg.setImage(c);
+            imgg.setFitWidth(200);
+            imgg.setFitHeight(200);
+            imgg.scaleXProperty();
+            imgg.scaleYProperty();
+            imgg.setSmooth(true);
+            imgg.setCache(true);
+        }
+    });
+    return myRow;
+});
+
+
+
+
+
+
+}
+
+    
+
+/*private void LoadDate() {
     sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
     id.setCellValueFactory(new PropertyValueFactory<>("id"));
     nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -307,43 +353,48 @@ public class ListeSponsorController implements Initializable {
                 MODIF.setText(nommmmmm);
                 path.setText(imageeeeeeee);
 
-    String imagePath = "C:\\Users\\wajihbenhmida\\Downloads\\image\\download.jpg";
-     imagePath = "C:\\Users\\wajihbenhmida\\Downloads\\image\\qr-code.png";
-    
+                // Open the file chooser dialog and get the selected file
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Select Image");
+                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                fileChooser.getExtensionFilters().addAll(
+                        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+                File selectedFile = fileChooser.showOpenDialog(null);
 
+                if (selectedFile != null) {
+                    String imagePath = selectedFile.getAbsolutePath();
+                    String newImagePath = imagePath.replaceAll("\\\\", "/");
+                    Image c = new Image("file:///" + newImagePath);
 
-    String newImagePath = imagePath.replaceAll("\\\\", "/");
-    Image c = new Image("file:///" + newImagePath);
-    // Utilisez l'image c comme vous le souhaitez
+                    img.setImage(c);
+                    img.setFitWidth(200);
+                    img.setFitHeight(200);
+                    img.scaleXProperty();
+                    img.scaleYProperty();
+                    img.setSmooth(true);
+                    img.setCache(true);
 
-                img.setImage(c);
-                img.setFitWidth(200);
-                img.setFitHeight(200);
-                img.scaleXProperty();
-                img.scaleYProperty();
-                img.setSmooth(true);
-                img.setCache(true);
-                
-                try {
-                    File file = new File(imageeeeeeee);
-                    FileInputStream fis = new FileInputStream(file);
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    byte[] buf = new byte[1024];
-                    for (int readNum; (readNum = fis.read(buf)) != -1;) {
-                        bos.write(buf, 0, readNum);
+                    try {
+                        FileInputStream fis = new FileInputStream(selectedFile);
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        byte[] buf = new byte[1024];
+                        for (int readNum; (readNum = fis.read(buf)) != -1;) {
+                            bos.write(buf, 0, readNum);
+                        }
+                        byte[] person_image = bos.toByteArray();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                    byte[] person_image = bos.toByteArray();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         });
         return myRow;
     });
-}
+}*/
 
 
-   /* private void LoadDate() {
+
+    /*private void LoadDate() {
     sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
     id.setCellValueFactory(new PropertyValueFactory<>("id"));
     nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
@@ -380,15 +431,9 @@ public class ListeSponsorController implements Initializable {
         return myRow;
     });
 }*/
-
-
-    
-                    
     @FXML
-  private void delete(MouseEvent event) {
+    private void delete(MouseEvent event) {
     }
-
-  
 
     void getAddview(MouseEvent event) {
 
@@ -399,42 +444,20 @@ public class ListeSponsorController implements Initializable {
 
     }
 
-
-    /*@FXML
-    private void Edit(MouseEvent event) {
-          sponsor s=new sponsor();
-                            s.setId(Integer.parseInt(ID.getText()) );  
-                            System.out.println(path.getText());
-                            s.setImage(path.getText());
-                            s.setNom( MODIF.getText());
-                            System.out.println(s.getId());
-                            System.out.println("hellllllo"+path.getText());
-                            System.out.println(s);
-                            
-                           //sp.update(s); 
-                          // refreshtable();
-    }*/
-
     @FXML
     private void Edit(ActionEvent event) {
-               
-                           
-                            sponsor s=new sponsor();
-                            s.setId(Integer.parseInt(ID.getText()) );  
-                            System.out.println(path.getText());
-                            
-                            s.setImage(path.getText());
-                            s.setNom( MODIF.getText());
-                            System.out.println(s.getId());
-                            System.out.println(s);
-                            
-                            sp.update(s); 
-                            refreshtable();
+
+        sponsor s = new sponsor();
+        s.setId(Integer.parseInt(ID.getText()));
+        System.out.println(path.getText());
+
+        s.setImage(path.getText());
+        s.setNom(MODIF.getText());
+        System.out.println(s.getId());
+        System.out.println(s);
+
+        sp.update(s);
+        refreshtable();
     }
 
-   
-
-
-
 }
-        

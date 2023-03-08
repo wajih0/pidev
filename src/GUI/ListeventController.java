@@ -65,6 +65,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import java.awt.Color;
+import java.util.Optional;
 
 
 /**
@@ -108,7 +109,7 @@ public class ListeventController implements Initializable {
     @FXML
     private TableColumn<evennement, String> sponsor_id;
     
-    private ImageView imgqrcode;
+  
 
 
 
@@ -133,8 +134,8 @@ event_service e = new event_service();
          LoadDate();
          
          
-                  /*    QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        String myWeb = "file:///C:/profetionel/java/pidev/20230304133814.pdf";
+                    /* QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        String myWeb = "file:///C:/profetionel/java/pidev/20230304133814.pdf"+ListeventController.class;
         int width = 300;
         int height = 300;
         String fileType = "png";
@@ -233,14 +234,21 @@ void generer(MouseEvent event) throws IOException {
     document.close();
 
     ///Open FilePdf
-    File file = new File(DateLyoum + ".pdf");
-    Desktop desktop = Desktop.getDesktop();
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Fichier PDF généré");
+    alert.setHeaderText("Le fichier PDF a été généré avec succès !");
+    alert.setContentText("Voulez-vous ouvrir le fichier PDF maintenant ?");
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+        File file = new File(DateLyoum + ".pdf");
+        Desktop desktop = Desktop.getDesktop();
     if (file.exists()) //checks file exists or not  
     {
         desktop.open(file); //opens the specified file   
     }
 
-}
+    }}
     
     
     @FXML
@@ -260,6 +268,9 @@ void generer(MouseEvent event) throws IOException {
 void refreshtable(MouseEvent event) {
     LoadDate();
    }
+
+
+
 
 @FXML
     void filter(KeyEvent event) {
@@ -348,7 +359,7 @@ EVENTTAB.setItems(newdata);
     prix.setCellValueFactory(new PropertyValueFactory<evennement,String>("prix"));
     nb_participants.setCellValueFactory(new PropertyValueFactory<evennement,String>("nb_participants"));
     type_evenement.setCellValueFactory(new PropertyValueFactory<evennement,String>("type_evenement"));
-    sponsor_id.setCellValueFactory(new PropertyValueFactory<evennement,String>("sponsor_id"));
+ //  sponsor_id.setCellValueFactory(new PropertyValueFactory<evennement,String>("sponsor_id"));
 
 EVENTTAB.setEditable(true);
     

@@ -5,7 +5,6 @@ package GUI;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -37,32 +36,29 @@ import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import pidev.entities.evennement;
 
-
 /**
  *
  * @author wajihbenhmida
  */
 public class sponsorMain extends Application {
-   // private double xoff = 0;
-   // private double yoff = 0;
- 
-    
-    @Override
-    public void start(Stage primaryStage) throws IOException{
-        //AddeventAdmin
-       // listevent_1 
-       //listevent  fxml de user 
-       //listeSponsor
-             Parent parent = FXMLLoader.load(getClass().getResource("listeSponsor.fxml"));
-           Scene scene = new Scene(parent);
-            scene.setFill(Color.TRANSPARENT);
-            primaryStage.setScene(scene);
-            primaryStage.initStyle(StageStyle.TRANSPARENT);
-            primaryStage.show();
-      
-    }    
+    // private double xoff = 0;
+    // private double yoff = 0;
 
-       
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        //AddeventAdmin
+        // listevent_1 
+        //listevent  fxml de user 
+        //listeSponsor
+        Parent parent = FXMLLoader.load(getClass().getResource("listevent.fxml"));
+        Scene scene = new Scene(parent);
+        scene.setFill(Color.TRANSPARENT);
+        primaryStage.setScene(scene);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.show();
+
+        ///endqr
+    }
 
     /**
      * @param args the command line arguments
@@ -70,5 +66,5 @@ public class sponsorMain extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

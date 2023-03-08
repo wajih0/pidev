@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/profetionel/java/pidev/src/pidev/services/sponsort_service.java</file>
-            <file>file:/C:/profetionel/java/pidev/src/GUI/listevent.fxml</file>
+            <file>file:/C:/profetionel/java/pidev/src/pidev/entities/evennement.java</file>
+            <file>file:/C:/profetionel/java/pidev/src/GUI/ListeventController.java</file>
             <file>file:/C:/profetionel/java/pidev/src/GUI/sponsorMain.java</file>
-            <file>file:/C:/profetionel/java/pidev/src/GUI/listeSponsor.fxml</file>
+            <file>file:/C:/profetionel/java/pidev/src/pidev/services/event_service.java</file>
             <file>file:/C:/profetionel/java/pidev/src/GUI/ListeSponsorController.java</file>
+            <file>file:/C:/profetionel/java/pidev/src/GUI/Qr_codrController.java</file>
+            <file>file:/C:/profetionel/java/pidev/src/pidev/entities/type_evennement.java</file>
+            <file>file:/C:/profetionel/java/pidev/src/GUI/ListeventController1.java</file>
             <file>file:/C:/profetionel/java/pidev/src/pidev/entities/sponsor.java</file>
         </group>
     </open-files>

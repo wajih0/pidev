@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ListeventController">
+<AnchorPane id="AnchorPane" prefHeight="433.0" prefWidth="706.0" style="-fx-background-color: e9ebf0;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.ListeventController">
    <children>
       <Pane layoutY="61.0" minHeight="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="2.0" prefWidth="600.0" style="-fx-background-color: #c86c34;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="74.0">
          <opaqueInsets>
@@ -43,7 +43,7 @@
       <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="76.0" prefHeight="65.0" prefWidth="200.0" spacing="20.0">
          <children>
             <FontAwesomeIcon fill="#566588" glyphName="USER_PLUS" onMouseClicked="#AddEVENT" size="2em" text="" />
-            <FontAwesomeIcon fill="#566588" glyphName="REFRESH" layoutX="10.0" layoutY="51.0" onMouseClicked="#refreshtable" size="2em" />
+            <FontAwesomeIcon fill="GREEN" glyphName="REFRESH" layoutX="10.0" layoutY="51.0" onMouseClicked="#refreshtable" size="2em" />
          </children>
          <opaqueInsets>
             <Insets />
@@ -54,9 +54,9 @@
             <FontAwesomeIcon fill="RED" glyphName="CLOSE" layoutX="674.0" layoutY="30.0" onMouseClicked="#close" text="" wrappingWidth="11.0" />
          </children>
       </HBox>
-      <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" onAction="#supprimer" text="supprimer" />
+      <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" onAction="#supprimer" style="-fx-background-color: #008000;" text="supprimer" textFill="WHITE" />
       <TextField fx:id="search" layoutX="488.0" layoutY="96.0" onKeyPressed="#filter" onKeyReleased="#filter" onKeyTyped="#filter" promptText="serch" />
-      <Button layoutX="556.0" layoutY="383.0" mnemonicParsing="false" onMouseClicked="#generer" prefHeight="26.0" prefWidth="94.0" text="Imprimer" />
+      <Button layoutX="556.0" layoutY="383.0" mnemonicParsing="false" onMouseClicked="#generer" prefHeight="26.0" prefWidth="94.0" style="-fx-background-color: #c86c34;" text="Imprimer" textFill="WHITE" />
       <Hyperlink layoutX="250.0" layoutY="396.0" onMouseClicked="#qrcode" prefHeight="24.0" prefWidth="150.0" text="visiter notre page" textFill="#c86c34" underline="true">
          <font>
             <Font size="13.0" />

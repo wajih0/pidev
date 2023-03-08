@@ -42,14 +42,14 @@
             <FontAwesomeIcon fill="#c86c34" glyphName="PRINT" layoutX="45.0" layoutY="60.0" onMouseClicked="#print" size="2em" />
          </children>
       </HBox>
-      <Button layoutX="114.0" layoutY="383.0" mnemonicParsing="false" onAction="#supprim" prefHeight="26.0" prefWidth="76.0" text="Supprimer" AnchorPane.topAnchor="383.0" />
-      <Button layoutX="203.0" layoutY="384.0" mnemonicParsing="false" onAction="#Edit" prefHeight="26.0" prefWidth="76.0" text="Modifier" AnchorPane.topAnchor="384.0" />
+      <Button layoutX="102.0" layoutY="383.0" mnemonicParsing="false" onAction="#supprim" prefHeight="26.0" prefWidth="76.0" style="-fx-background-color: red;" text="Supprimer" textFill="WHITE" AnchorPane.topAnchor="383.0" />
+      <Button layoutX="203.0" layoutY="384.0" mnemonicParsing="false" onAction="#Edit" prefHeight="26.0" prefWidth="76.0" style="-fx-background-color: #008000;" text="Modifier" textFill="WHITE" AnchorPane.topAnchor="384.0" />
       <TextField fx:id="ID" layoutX="271.0" layoutY="141.0" visible="false" />
       <TextField fx:id="MODIF" layoutX="174.0" layoutY="105.0" promptText="chan de modification " style="-fx-background-color: white;" />
-      <ImageView fx:id="img" fitHeight="150.0" fitWidth="200.0" layoutX="433.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imgg" fitHeight="150.0" fitWidth="200.0" layoutX="433.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="path" layoutX="491.0" layoutY="349.0" prefHeight="18.0" prefWidth="142.0" text="path " visible="false" />
       <TextField fx:id="search" layoutX="501.0" layoutY="101.0" onKeyPressed="#filter" onKeyReleased="#filter" onKeyTyped="#filter" prefHeight="28.0" prefWidth="160.0" promptText="search" />
-      <Button fx:id="Timage" layoutX="507.0" layoutY="382.0" mnemonicParsing="false" onAction="#addimgcours" prefHeight="26.0" prefWidth="142.0" text="changer votre photo" />
+      <Button fx:id="Timage" layoutX="466.0" layoutY="382.0" mnemonicParsing="false" onAction="#addimgcours" prefHeight="26.0" prefWidth="142.0" style="-fx-background-color: #566588;" text="Changer votre photo" textFill="WHITE" />
      
    </children>
 </AnchorPane>

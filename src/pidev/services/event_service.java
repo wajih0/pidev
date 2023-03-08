@@ -32,19 +32,6 @@ public class event_service implements IService<evennement>{
                 
     }
   
-   /* @Override
-    public void add(evennement e) {
- String qry ="INSERT INTO `evennement`( `nom`,`date`,`lieu`,`prix`,`description`,`nb_participants`,`type_evenement` ) VALUES ('"+e.getNom()+"','"+e.getDate()+"','"+e.getLieu()+"','"+e.getPrix()+"','"+e.getDescription()+"','"+e.getNb_participants()+"','"+e.getType_evenement()+"')";
-
-         
-
-    try{
-        Statement stm = cnx.createStatement();
-        
-        stm.executeUpdate(qry);        
-    }catch(SQLException ex){
-        System.out.println(ex.getMessage());
-    }    }*/
 
     public event_service() {
     }
@@ -81,8 +68,6 @@ public class event_service implements IService<evennement>{
      
    public void addBYUser(evennement e) {
   
-
-        
        try{
  String qry ="INSERT INTO `evennement`( `nom`, `description`, `lieu`, `prix`,  `date`, `nb_participants`, `type_evenement`)" +"VALUES ('"+e.getNom()+"','"+e.getDescription()+"','"+e.getLieu()+"','"+e.getPrix()+"','"+e.getDate()+"','"+e.getNb_participants()+"','"+e.getType_evenement()+"')";
   cnx = DataSource.getInstance().getCnx();
@@ -96,7 +81,13 @@ public class event_service implements IService<evennement>{
 
     
     
-    
+    public List<String> getAllTypes() {
+    List<String> types = new ArrayList<>();
+    for (type_evennement type : type_evennement.values()) {
+        types.add(type.name());
+    }
+    return types;
+}
    
     
     
@@ -114,20 +105,15 @@ public List<evennement> afficher() {
         while(rs.next()){
             evennement 
             p = new evennement();
-            p.setNom(rs.getString(2)); ;
+            p.setNom(rs.getString(2)); 
            p.setDescription(rs.getString(3));
             p.setLieu(rs.getString(4));
             p.setPrix(rs.getDouble(5));
+            p.setSponsors(rs.getInt(6));
             p.setDate(rs.getDate(7));
             p.setNb_participants(rs.getInt(8));
-            p.setType_evenement(type_evennement.ART);
+            p.setType_evenement(type_evennement.valueOf(rs.getString(9)));
            
-
-           
-            
-
-            
-            
             list.add(p);
         }
     } catch (SQLException ex) {
@@ -135,6 +121,10 @@ public List<evennement> afficher() {
     }
     return list; 
 }
+
+//p.setType_evenement(type_evennement.CINEMA);
+
+
 public List<evennement> afficherByuserid(int i) {
     List<evennement> list=new ArrayList<>();
     try {
@@ -187,17 +177,7 @@ String requete = "UPDATE `evennement` SET `nom`='" + e.getNom() + "', `descripti
 }
 
 
-    
-   /* public void supprimer(String nom) {
-   String requete = "DELETE FROM evennement WHERE nom = '" + nom + "';";
-    try {
-        Statement stm = cnx.createStatement();
-        stm.executeUpdate(requete);
-        System.out.println("L'événement " + nom + " a été supprimé avec succès.");
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de la suppression de l'événement " + nom + " : " + ex.getMessage());
-    }
-                }*/
+
 
   
      public void supprimerid(String u) {

@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -86,7 +89,7 @@ public class ListeventController1 implements Initializable {
     
 
     @FXML
-    private TableColumn<evennement, String> sponsor_id;
+    private TableColumn<?,?> sponsor_id;
     
 
 
@@ -111,8 +114,8 @@ event_service e = new event_service();
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
          LoadDate();
-       
-
+         
+        
 
           }
     
@@ -141,29 +144,38 @@ void generer(MouseEvent event) throws IOException {
 
         //contenu du tableau.
       table.addCell("Nom");
-        table.addCell("Date ");
-        table.addCell("Type evennement");
-                        table.addCell("sponsor_id");
-
-        table.addCell("Prix");
-        table.addCell("Description");
+      table.addCell("Description");
         table.addCell("lieu");
+         table.addCell("Prix");
+       
+        
+                        table.addCell("sponsor_id");
+                         table.addCell("Date ");
+
+       
+        
         table.addCell("nombre participant ");
+        table.addCell("Type evennement");
 
 
         evennement r = new evennement();
         e.afficher().forEach(e -> {
             table.setHorizontalAlignment(Element.ALIGN_CENTER);
                                     table.addCell(String.valueOf(e.getNom()));
-                        table.addCell(String.valueOf(e.getDate()));
-                                                table.addCell(String.valueOf(e.getType_evenement()));
-                        table.addCell(String.valueOf(e.getSponsors()));
-
-
-            table.addCell(String.valueOf(e.getPrix()));
-            table.addCell(String.valueOf(e.getDescription()));
+                                     table.addCell(String.valueOf(e.getDescription()));
             table.addCell(String.valueOf(e.getLieu()));
             table.addCell(String.valueOf(e.getPrix()));
+            table.addCell(String.valueOf(e.getSponsors()));
+                        table.addCell(String.valueOf(e.getDate()));
+                                                table.addCell(String.valueOf(e.getNb_participants()));
+
+                        
+                                                table.addCell(String.valueOf(e.getType_evenement()));
+                        
+
+
+            
+           
             
         });
         document.add(ph1);
@@ -177,14 +189,21 @@ void generer(MouseEvent event) throws IOException {
     document.close();
 
     ///Open FilePdf
-    File file = new File(DateLyoum + ".pdf");
-    Desktop desktop = Desktop.getDesktop();
+   Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Fichier PDF généré");
+    alert.setHeaderText("Le fichier PDF a été généré avec succès !");
+    alert.setContentText("Voulez-vous ouvrir le fichier PDF maintenant ?");
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == ButtonType.OK) {
+        File file = new File(DateLyoum + ".pdf");
+        Desktop desktop = Desktop.getDesktop();
     if (file.exists()) //checks file exists or not  
     {
         desktop.open(file); //opens the specified file   
     }
 
-}
+}}
     
     
     @FXML
@@ -271,12 +290,13 @@ EVENTTAB.setItems(newdata);
 
     description.setCellValueFactory(new PropertyValueFactory<evennement,String>("description"));
         lieu.setCellValueFactory(new PropertyValueFactory<evennement,String>("lieu"));
-
-    date.setCellValueFactory(new PropertyValueFactory<evennement,String>("date"));
     prix.setCellValueFactory(new PropertyValueFactory<evennement,String>("prix"));
+
+    sponsor_id.setCellValueFactory(new PropertyValueFactory<>("sponsors"));
+    date.setCellValueFactory(new PropertyValueFactory<evennement,String>("date"));
     nb_participants.setCellValueFactory(new PropertyValueFactory<evennement,String>("nb_participants"));
     type_evenement.setCellValueFactory(new PropertyValueFactory<evennement,String>("type_evenement"));
-    sponsor_id.setCellValueFactory(new PropertyValueFactory<evennement,String>("sponsor_id"));
+   
 
 EVENTTAB.setEditable(true);
     

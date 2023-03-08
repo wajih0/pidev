@@ -29,6 +29,6 @@
       <DatePicker fx:id="datepickerdate" layoutX="385.0" layoutY="100.0" promptText="Date" AnchorPane.topAnchor="100.0" />
       <TextField fx:id="nb_particip" layoutX="225.0" layoutY="164.0" promptText="nb_participant" />
       <ChoiceBox fx:id="type" layoutX="397.0" layoutY="164.0" prefWidth="150.0" />
-      <Button layoutX="198.0" layoutY="306.0" mnemonicParsing="false" onAction="#ajoutereevent" prefHeight="26.0" prefWidth="226.0" style="-fx-background-color: #566588;" text="ajouter" />
+      <Button layoutX="214.0" layoutY="306.0" mnemonicParsing="false" onAction="#ajoutereevent" prefHeight="26.0" prefWidth="210.0" style="-fx-background-color: #566588;" text="ajouter" textFill="WHITE" />
    </children>
 </AnchorPane>

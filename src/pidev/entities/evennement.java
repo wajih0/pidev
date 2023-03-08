@@ -22,7 +22,7 @@ public class evennement {
     private int nb_participants;
     private double prix;
     private type_evennement type_evenement; //enum
-    private int sponsors;//one to many sponsor
+    private int sponsors;
 
     public evennement(int id, String nom, String description1) {
         this.id = id;
@@ -185,6 +185,10 @@ public class evennement {
 
     public evennement get(int i) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void getType_evenement(type_evennement valueOf) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     
