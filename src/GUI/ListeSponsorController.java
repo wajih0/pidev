@@ -208,8 +208,6 @@ public class ListeSponsorController implements Initializable {
             document.add(ph1);
             document.add(ph2);
             document.add(table);
-            //  document.addAuthor("Bike");
-            // AlertDialog.showNotification("Creation PDF ", "Votre fichier PDF a ete cree avec success", AlertDialog.image_checked);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -324,113 +322,10 @@ public class ListeSponsorController implements Initializable {
 });
 
 
-
-
-
-
 }
 
     
 
-/*private void LoadDate() {
-    sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
-    id.setCellValueFactory(new PropertyValueFactory<>("id"));
-    nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-    Image.setCellValueFactory(new PropertyValueFactory<>("Image"));
-    sponsortable.setEditable(true);
-
-    sponsortable.setRowFactory(tv -> {
-        TableRow<sponsor> myRow = new TableRow<>();
-        myRow.setOnMouseClicked((MouseEvent event) -> {
-            if (event.getClickCount() == 1 && (!myRow.isEmpty())) {
-                int myIndex = sponsortable.getSelectionModel().getSelectedIndex();
-                int id = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).getId()));
-                String idd = String.valueOf(id);
-                ID.setText(idd);
-
-                String nommmmmm = sponsortable.getItems().get(myIndex).getNom();
-                String imageeeeeeee = sponsortable.getItems().get(myIndex).getImage();
-                MODIF.setText(nommmmmm);
-                path.setText(imageeeeeeee);
-
-                // Open the file chooser dialog and get the selected file
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Select Image");
-                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-                fileChooser.getExtensionFilters().addAll(
-                        new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
-                File selectedFile = fileChooser.showOpenDialog(null);
-
-                if (selectedFile != null) {
-                    String imagePath = selectedFile.getAbsolutePath();
-                    String newImagePath = imagePath.replaceAll("\\\\", "/");
-                    Image c = new Image("file:///" + newImagePath);
-
-                    img.setImage(c);
-                    img.setFitWidth(200);
-                    img.setFitHeight(200);
-                    img.scaleXProperty();
-                    img.scaleYProperty();
-                    img.setSmooth(true);
-                    img.setCache(true);
-
-                    try {
-                        FileInputStream fis = new FileInputStream(selectedFile);
-                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                        byte[] buf = new byte[1024];
-                        for (int readNum; (readNum = fis.read(buf)) != -1;) {
-                            bos.write(buf, 0, readNum);
-                        }
-                        byte[] person_image = bos.toByteArray();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-        return myRow;
-    });
-}*/
-
-
-
-    /*private void LoadDate() {
-    sponsortable.setItems(FXCollections.observableArrayList(sp.afficher()));
-    id.setCellValueFactory(new PropertyValueFactory<>("id"));
-    nom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-    Image.setCellValueFactory(new PropertyValueFactory<>("Image"));
-    sponsortable.setEditable(true);
-
-    sponsortable.setRowFactory(tv -> {
-        TableRow<sponsor> myRow = new TableRow<>();
-        myRow.setOnMouseClicked((MouseEvent event) -> {
-            if (event.getClickCount() == 1 && (!myRow.isEmpty())) {
-                int myIndex = sponsortable.getSelectionModel().getSelectedIndex();
-                int id = Integer.parseInt(String.valueOf(sponsortable.getItems().get(myIndex).getId()));
-                String idd = String.valueOf(id);
-                ID.setText(idd);
-
-                String nommmmmm = sponsortable.getItems().get(myIndex).getNom();
-                String imageeeeeeee = sponsortable.getItems().get(myIndex).getImage();
-                MODIF.setText(nommmmmm);
-                path.setText(imageeeeeeee);
-
-                String newString = imageeeeeeee.replaceAll("/", "\\\\");
-                Image c = new Image("file:///" + newString);
-                
-                img.setImage(c);
-                img.setFitWidth(200);
-                img.setFitHeight(200);
-                img.scaleXProperty();
-                img.scaleYProperty();
-                img.setSmooth(true);
-                img.setCache(true);
-                
-            }
-        });
-        return myRow;
-    });
-}*/
     @FXML
     private void delete(MouseEvent event) {
     }

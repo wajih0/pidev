@@ -5,12 +5,6 @@
  */
 package GUI;
 
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
-import static java.util.Collections.list;
-import java.util.List;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +25,11 @@ import pidev.entities.sponsor;
 import pidev.entities.type_evennement;
 import pidev.services.event_service;
 import pidev.services.sponsort_service;
+
+import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
 
 /**
  * FXML Controller class

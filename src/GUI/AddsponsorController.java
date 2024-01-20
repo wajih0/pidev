@@ -129,12 +129,14 @@ connection = DataSource.getInstance().getCnx();
             insert();
             clean();
 
+            JOptionPane.showMessageDialog(null, "sponsor ajouter");
+            Notifications.create()
+                    .title("New Linge Added")
+                    .text("A new sponsor has been added successfully!")
+                    .showInformation();
+
         }
-        JOptionPane.showMessageDialog(null, "sponsor ajouter");
-        Notifications.create()
-            .title("New Linge Added")
-            .text("A new sponsor has been added successfully!")
-            .showInformation();
+
 
 
     }

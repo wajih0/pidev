@@ -56,7 +56,6 @@ public sponsort_service(String nom){
     public List<sponsor> afficher() {
            cnx=DataSource.getInstance().getCnx();
 
-      
 String requete ="select * from sponsor";
 
         List<sponsor> list=new ArrayList<>();
@@ -68,8 +67,8 @@ String requete ="select * from sponsor";
            while(rs.next()){
                sponsor s = new sponsor();
                s.setId(rs.getInt(1));
-               s.setNom(rs.getNString(2));
-               s.setImage(rs.getNString(3));
+               s.setNom(rs.getString(2));
+               s.setImage(rs.getString(3));
                list.add(s);
                        
            }
@@ -90,32 +89,7 @@ String requete = "UPDATE `sponsor` SET `nom`='"+u.getNom()+"',`image`='"+u.getIm
         } catch (SQLException ex) {
             Logger.getLogger(sponsort_service.class.getName()).log(Level.SEVERE, null, ex);
         }
-      /*   try {
-        String qry = "UPDATE `sponsor` SET `nom`='"+u.getNom()+"' WHERE `id`='"+u.getId()+"'"  ;
-
-            cnx = DataSource.getInstance().getCnx();
-
-            Statement stm = cnx.createStatement();
-            stm.executeUpdate(qry);
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }*/
-    
-  
-   /* public void supprimer_sponsor(String nom) {
-   String requete = "DELETE FROM sponsor WHERE nom = '" + nom + "';";
-    try {
-        Statement stm = cnx.createStatement();
-            cnx=DataSource.getInstance().getCnx();
-
-        stm.executeUpdate(requete);
-        System.out.println("L'événement " + nom + " a été supprimé avec succès.");
-    } catch (SQLException ex) {
-        System.out.println("Erreur lors de la suppression de l'événement " + nom + " : " + ex.getMessage());
-    }
-                }*/}
+   }
     
     public void supprimerid(String u) {
          try {
@@ -133,26 +107,7 @@ String requete = "UPDATE `sponsor` SET `nom`='"+u.getNom()+"',`image`='"+u.getIm
        
     }
     
-   /* public void supprimer_sponsor(String id) throws SQLException {
-    Connection cnx = DataSource.getInstance().getCnx();
-    PreparedStatement pst = null;
-    try {
-        pst = cnx.prepareStatement("DELETE FROM sponsor WHERE id = ?");
-       
-        int result = pst.executeUpdate();
-        if(result > 0) {
-            System.out.println("Sponsor supprimé avec succès.");
-        } else {
-            System.out.println("Impossible de supprimer le sponsor.");
-        }
-    } catch(SQLException e) {
-        e.printStackTrace();
-    } finally {
-        if(pst != null) {
-            pst.close();
-        }
-    }*/
-    
+
 
     
     

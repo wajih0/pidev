@@ -6,12 +6,11 @@
 package pidev;
 
 import java.sql.Date;
-import java.util.List;
+
 import pidev.entities.evennement;
 import pidev.entities.sponsor;
 import pidev.entities.type_evennement;
 import pidev.services.event_service;
-import pidev.services.personneservice;
 import pidev.services.sponsort_service;
 
 /**
